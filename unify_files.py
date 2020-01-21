@@ -4,7 +4,7 @@ import Source_Analyze.analize as aSource
 import Sentiment_Analysis.SentimentAnalysis as sentimentAnalysis
 from textblob import TextBlob
 from sklearn import svm
-from sklearn.preprocessing import normalize
+from sklearn import preprocessing
 import numpy as np
 from nltk.tokenize import sent_tokenize, word_tokenize
 import json
@@ -84,8 +84,8 @@ for registry in data_json:
         wordCount.append(0)
 
     sample = np.asarray(wordCount)
-    sample_normalized = normalize(sample[:,np.newaxis], axis=0).ravel() 
-    data_set.append(sample_normalized.tolist())
+    #sample_normalized = normalize(sample[:,np.newaxis], axis=0).ravel() 
+    data_set.append(sample.tolist())
 
     news_count += 1
 
@@ -109,7 +109,9 @@ for registry in data_json:
     else:
         print ('{}/{}'.format(news_count, total_news))
 
-f = open('dataset_real_vector_2020.json','w')
+#data_set = preprocessing.normalize(data_set).tolist()
+data_set = preprocessing.scale(data_set).tolist()
+f = open('dataset_real_vector_2020_scaled.json','w')
 json.dump(data_set,f)
 f.close()
 

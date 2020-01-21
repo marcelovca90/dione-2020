@@ -7,11 +7,11 @@ import json
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MaxNLocator
 
-inputPath = 'dataset_real_vector_2020.json'
+inputPath = 'dataset_real_vector_2020_normalized.json'
 jsonStr = open(inputPath).read()
 data_real = json.loads(jsonStr)
 
-inputPathTest = 'dataset_fake_vector_2020.json'
+inputPathTest = 'dataset_fake_vector_2020_normalized.json'
 jsonStrTest = open(inputPathTest).read()
 data_fake = json.loads(jsonStrTest)
 
@@ -21,10 +21,6 @@ p_words_limit = 1000
 include_sentiment_analysis = True
 include_source_check = True
 
-colors = {}
-colors[100] = 'r'
-colors[200] = 'g'
-colors[300] = 'b'
 max_f1 = 0.0
 
 plot_data_x = []
@@ -82,7 +78,7 @@ while p_words <= p_words_limit:
             training_set_final.append(np.asarray(training_temp))
 
         # train model
-        clf = svm.OneClassSVM(nu=0.1, kernel="rbf", gamma='auto')
+        clf = svm.OneClassSVM(nu=0.01, kernel="rbf", gamma='scale')
         clf.fit(training_set_final)
 
         # choose appropriate features for the test samples
